@@ -118,16 +118,17 @@ export const projects = [
 
   {
     number: "03",
-    title: "Brain Tumor Classification",
-    category: "Deep Learning",
+    title: "E-Commerce Platform",
+    category: "Full-Stack Web",
     description:
-      "AI-powered MRI brain tumor classification system using transfer learning with VGG16 to classify brain MRI images.",
+      "Built a full-stack e-commerce system including product management, cart, checkout, order tracking, REST APIs, payment gateway integration, and responsive UI.",
     technologies: [
-      "Python",
-      "PyTorch",
-      "VGG16",
-      "Deep Learning",
-      "Computer Vision",
+      "PHP",
+      "Laravel",
+      "React",
+      "MySQL",
+      "REST API",
+      "Payment Gateway",
     ],
     github: "#",
     demo: "#",
@@ -135,6 +136,24 @@ export const projects = [
 
   {
     number: "04",
+    title: "Enterprise ERP System",
+    category: "Full-Stack Web",
+    description:
+      "A comprehensive ERP application designed to manage business operations across Inventory, HR, Billing, and Reporting modules with role-based access, automated workflows, and optimized DB queries.",
+    technologies: [
+      "PHP",
+      "Laravel",
+      "React",
+      "MySQL",
+      "REST API",
+      "Database Optimization",
+    ],
+    github: "#",
+    demo: "#",
+  },
+
+  {
+    number: "05",
     title: "Face Attendance System",
     category: "Computer Vision",
     description:
@@ -160,11 +179,11 @@ export const stats = [
     label: "Technologies",
   },
   {
-    value: "4+",
+    value: "5+",
     label: "Featured Projects",
   },
   {
     value: "∞",
     label: "Curiosity",
   },
-];
+];
