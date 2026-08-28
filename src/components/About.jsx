@@ -1,28 +1,28 @@
 import { motion } from "framer-motion";
-import { Code2, BrainCircuit, Database, Rocket } from "lucide-react";
+import { Code2, BrainCircuit, Database, Cpu } from "lucide-react";
 import { personalInfo } from "../data/portfolio";
 
 function About() {
   const cards = [
     {
-      icon: <Code2 />,
+      icon: <Code2 size={24} />,
       title: "Full-Stack Development",
-      text: "Building production-ready web applications with Laravel, React, REST APIs and MySQL.",
+      text: "Building robust, production-ready web applications using Laravel, React, REST APIs, and MySQL.",
     },
     {
-      icon: <BrainCircuit />,
+      icon: <BrainCircuit size={24} />,
       title: "AI & Machine Learning",
-      text: "Developing practical AI solutions using Python, computer vision, deep learning and LLM technologies.",
+      text: "Integrating intelligent solutions using Python, Computer Vision, YOLOv8, and LLM technologies.",
     },
     {
-      icon: <Database />,
+      icon: <Database size={24} />,
       title: "Backend Engineering",
-      text: "Designing APIs, database systems, authentication flows and business logic for scalable applications.",
+      text: "Architecting high-performance APIs, relational database schemas, authentication systems, and business workflows.",
     },
     {
-      icon: <Rocket />,
-      title: "Continuous Learning",
-      text: "Constantly exploring new technologies across AI, GenAI, cloud and modern software engineering.",
+      icon: <Cpu size={24} />,
+      title: "System Optimization",
+      text: "Improving DB queries, caching strategies, and application performance for scale.",
     },
   ];
 
@@ -30,7 +30,7 @@ function About() {
     <section className="section about-section" id="about">
       <div className="section-container">
         <div className="section-heading">
-          <span>01 — ABOUT</span>
+          <span className="badge-tag">01 — ABOUT ME</span>
           <h2>
             Code with purpose.
             <br />
@@ -44,37 +44,31 @@ function About() {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <p className="large-text">{personalInfo.shortBio}</p>
+            <p className="lead">{personalInfo.shortBio}</p>
 
             <p>
-              My primary professional experience is in PHP and Laravel
-              development, while my broader technical journey has expanded
-              into React, Python, machine learning, computer vision and
-              Generative AI.
+              My core engineering background revolves around <strong>PHP and Laravel development</strong>, complemented by modern frontend crafting in <strong>React</strong> and intelligent backend AI modeling with <strong>Python</strong>.
             </p>
 
             <p>
-              I enjoy taking an idea from a database and API layer all the way
-              through to a polished user interface — and increasingly adding
-              intelligent capabilities along the way.
+              I take pride in translating complex client requirements into scalable backend architectures, clean RESTful endpoints, and responsive, interactive frontend experiences.
             </p>
           </motion.div>
 
-          <div className="about-cards">
+          <div className="about-cards-grid">
             {cards.map((card, index) => (
               <motion.div
                 className="about-card"
                 key={card.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <div className="card-icon">{card.icon}</div>
-
+                <div className="about-card-icon">{card.icon}</div>
                 <h3>{card.title}</h3>
-
                 <p>{card.text}</p>
               </motion.div>
             ))}

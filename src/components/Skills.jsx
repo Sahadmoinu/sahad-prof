@@ -6,8 +6,7 @@ function Skills() {
     <section className="section skills-section" id="skills">
       <div className="section-container">
         <div className="section-heading">
-          <span>03 — TOOLKIT</span>
-
+          <span className="badge-tag">03 — TOOLKIT</span>
           <h2>
             Technologies I
             <br />
@@ -18,22 +17,23 @@ function Skills() {
         <div className="skills-grid">
           {Object.entries(skills).map(([category, technologies], index) => (
             <motion.div
-              className="skill-group"
+              className="skill-category-card"
               key={category}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
+              transition={{ delay: index * 0.08, duration: 0.5 }}
             >
-              <div className="skill-number">
-                0{index + 1}
+              <div className="skill-header">
+                <h3>{category}</h3>
+                <span className="skill-num">0{index + 1}</span>
               </div>
 
-              <h3>{category}</h3>
-
-              <div className="skill-tags">
-                {technologies.map((technology) => (
-                  <span key={technology}>{technology}</span>
+              <div className="skill-list">
+                {technologies.map((tech) => (
+                  <span className="skill-item" key={tech}>
+                    {tech}
+                  </span>
                 ))}
               </div>
             </motion.div>

@@ -5,12 +5,9 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <div>
+        <div className="footer-brand">
           <strong>{personalInfo.name}</strong>
-
-          <p>
-            Full-Stack Developer · AI/ML Engineer
-          </p>
+          <p>Full-Stack Software Developer & AI Engineer</p>
         </div>
 
         <button
@@ -22,12 +19,12 @@ function Footer() {
             })
           }
         >
-          Back to top
-          <ArrowUp size={16} />
+          <span>Back to top</span>
+          <ArrowUp size={14} />
         </button>
 
-        <p className="copyright">
-          © {new Date().getFullYear()} {personalInfo.name}. Built with React.
+        <p className="copyright" style={{ color: "var(--text-dim)", fontSize: 13 }}>
+          © {new Date().getFullYear()} {personalInfo.name}. Designed & Built with React & Vite.
         </p>
       </div>
     </footer>
