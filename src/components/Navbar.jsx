@@ -1,115 +1,151 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { personalInfo } from "../data/portfolio";
+import { ease, scrollToId } from "../lib/motion";
+
+const links = [
+  ["About", "about"],
+  ["Experience", "experience"],
+  ["Skills", "skills"],
+  ["Projects", "projects"],
+  ["Contact", "contact"],
+];
+
+function ThemeButton({ theme, toggleTheme }) {
+  return (
+    <button
+      className="icon-btn"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ rotate: -90, scale: 0, opacity: 0 }}
+          animate={{ rotate: 0, scale: 1, opacity: 1 }}
+          exit={{ rotate: 90, scale: 0, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ display: "grid" }}
+        >
+          {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
 
 function Navbar({ theme, toggleTheme }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
-
-  const links = [
-    ["About", "about"],
-    ["Experience", "experience"],
-    ["Skills", "skills"],
-    ["Projects", "projects"],
-    ["Contact", "contact"],
-  ];
+  const [hidden, setHidden] = useState(false);
+  const [active, setActive] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-
-      // Determine active section based on scroll position
-      const scrollPos = window.scrollY + 200;
-      for (const [, id] of links) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(id);
-            break;
-          }
-        }
-      }
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 30);
+      setHidden(y > last && y > 400);
+      last = y;
     };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    links.forEach(([, id]) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      io.disconnect();
+    };
   }, []);
 
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-    });
+  const go = (id) => {
     setOpen(false);
+    scrollToId(id);
   };
 
   return (
-    <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
-      <div className="nav-container">
-        <button
-          className="logo"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Scroll to top"
-        >
-          <div className="logo-icon">S</div>
-          <div className="logo-info">
-            <strong>{personalInfo.name}</strong>
-            <small>Software Engineer</small>
-          </div>
+    <motion.header
+      className={`navbar ${scrolled ? "scrolled" : ""}`}
+      animate={{ y: hidden && !open ? -110 : 0 }}
+      transition={{ duration: 0.45, ease }}
+    >
+      <div className="nav-inner">
+        <button className="logo" onClick={() => go("top")} aria-label="Back to top">
+          <span className="logo-mark">{personalInfo.initials}</span>
+          <span className="logo-text">
+            {personalInfo.shortName}
+            <span className="logo-dot">.</span>
+          </span>
         </button>
 
-        <nav className={`nav-links ${open ? "active" : ""}`}>
+        <nav className="nav-links" aria-label="Primary">
           {links.map(([label, id]) => (
-            <button
-              key={id}
-              className={activeSection === id ? "active" : ""}
-              onClick={() => scrollToSection(id)}
-            >
-              {label}
+            <button key={id} onClick={() => go(id)} className={active === id ? "active" : ""}>
+              {active === id && (
+                <motion.span
+                  layoutId="nav-pill"
+                  className="nav-pill"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <span className="nav-label">{label}</span>
             </button>
           ))}
-
-          <button
-            className="theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
-          <a
-            className="nav-resume-btn"
-            href={personalInfo.resume}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>Resume</span>
-            <ArrowUpRight size={14} />
-          </a>
         </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div className="nav-actions">
+          <ThemeButton theme={theme} toggleTheme={toggleTheme} />
+          <a className="nav-cta" href={personalInfo.resume} target="_blank" rel="noreferrer">
+            Resume <ArrowUpRight size={15} />
+          </a>
           <button
-            className="theme-toggle-btn mobile-theme-btn"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
+            className="icon-btn menu-btn"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
           >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
-          <button
-            className="mobile-menu-toggle"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle navigation"
-          >
-            {open ? <X size={24} /> : <Menu size={24} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
-    </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="mobile-menu"
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease }}
+          >
+            {links.map(([label, id], i) => (
+              <motion.button
+                key={id}
+                onClick={() => go(id)}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 * i, ease }}
+              >
+                <span className="mm-index">0{i + 1}</span>
+                {label}
+              </motion.button>
+            ))}
+            <a className="nav-cta mm-cta" href={personalInfo.resume} target="_blank" rel="noreferrer">
+              Download Resume <ArrowUpRight size={15} />
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }
 

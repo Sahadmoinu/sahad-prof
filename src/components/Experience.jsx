@@ -1,52 +1,73 @@
-import { motion } from "framer-motion";
-import { Briefcase, Calendar, MapPin } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { Briefcase, GraduationCap } from "lucide-react";
 import { experience } from "../data/portfolio";
+import { SectionHeading } from "./ui";
+import { ease } from "../lib/motion";
 
 function Experience() {
+  const listRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 75%", "end 60%"] });
+  const line = useSpring(scrollYProgress, { stiffness: 90, damping: 25 });
+
   return (
-    <section className="section experience-section" id="experience">
-      <div className="section-container">
-        <div className="section-heading">
-          <span className="badge-tag">02 — EXPERIENCE</span>
-          <h2>
-            Where I've
-            <br />
-            <em>made an impact.</em>
-          </h2>
-        </div>
+    <section className="section" id="experience">
+      <div className="container">
+        <SectionHeading index="02" kicker="Experience" title="The path" accent="so far.">
+          From intern to team lead, with a data science detour that turned into my focus.
+        </SectionHeading>
 
-        <div className="experience-timeline">
-          {experience.map((item, index) => (
-            <motion.article
-              className="experience-card"
-              key={`${item.company}-${item.role}`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-            >
-              <div>
-                <span className="exp-year">{item.year}</span>
-              </div>
+        <div className="timeline" ref={listRef}>
+          <div className="timeline-rail" aria-hidden="true">
+            <motion.div className="timeline-fill" style={{ scaleY: line }} />
+          </div>
 
-              <div className="exp-content">
-                <h3>{item.role}</h3>
-                <div className="exp-company">
-                  <span>{item.company}</span> · <span>{item.location}</span>
-                </div>
+          {experience.map((job, i) => {
+            const Icon = job.type === "Internship" ? GraduationCap : Briefcase;
+            return (
+              <motion.article
+                className="timeline-item"
+                key={job.company + job.role}
+                initial={{ opacity: 0, x: 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.9, ease, delay: 0.05 * i }}
+              >
+                <motion.span
+                  className={`timeline-node ${job.current ? "current" : ""}`}
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.2 }}
+                >
+                  <Icon size={15} />
+                </motion.span>
 
-                <p className="exp-description">{item.description}</p>
-
-                <div className="tag-pills">
-                  {item.technologies.map((tech) => (
-                    <span key={tech} className="tag-pill">
-                      {tech}
+                <div className="job-card">
+                  <div className="job-top">
+                    <span className="job-period">{job.period}</span>
+                    <span className={`job-type ${job.current ? "now" : ""}`}>
+                      {job.current ? "Current" : job.type}
                     </span>
-                  ))}
+                  </div>
+                  <h3 className="job-role">{job.role}</h3>
+                  <p className="job-company">{job.company}</p>
+                  <ul className="job-points">
+                    {job.points.map((p) => (
+                      <li key={p}>{p}</li>
+                    ))}
+                  </ul>
+                  <div className="chips">
+                    {job.tech.map((t) => (
+                      <span className="chip" key={t}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </motion.article>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

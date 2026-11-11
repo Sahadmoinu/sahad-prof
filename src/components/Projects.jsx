@@ -1,176 +1,245 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, X, ExternalLink, Sparkles } from "lucide-react";
-import { projects } from "../data/portfolio";
+import { useEffect, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { ArrowUpRight, X, Film, ShoppingCart, ScanFace, Bot, Check } from "lucide-react";
+import { personalInfo, projectFilters, projects } from "../data/portfolio";
+import { GithubIcon, SectionHeading, TiltCard } from "./ui";
+import { ease } from "../lib/motion";
 
-function GithubIcon({ size = 18 }) {
+/* Small animated illustration per project. */
+function ProjectArt({ kind }) {
+  switch (kind) {
+    case "rag":
+      return (
+        <div className="art art-rag">
+          <svg viewBox="0 0 120 120" className="score-ring">
+            <circle cx="60" cy="60" r="48" className="ring-bg" />
+            <circle cx="60" cy="60" r="48" className="ring-fg" pathLength="100" />
+          </svg>
+          <div className="score-label">
+            <strong>87%</strong>
+            <small>match</small>
+          </div>
+          <div className="rag-chips">
+            <span>embed</span>
+            <span>retrieve</span>
+            <span>generate</span>
+          </div>
+        </div>
+      );
+    case "vision":
+      return (
+        <div className="art art-vision">
+          <div className="plate">
+            <span>KL 07 AB 1234</span>
+            <i className="scan-line" />
+          </div>
+          <div className="bbox-label">plate · 0.96</div>
+        </div>
+      );
+    case "face":
+      return (
+        <div className="art art-face">
+          <div className="face-frame">
+            <ScanFace size={54} strokeWidth={1.3} />
+            <i className="corner tl" />
+            <i className="corner tr" />
+            <i className="corner bl" />
+            <i className="corner br" />
+          </div>
+          <div className="face-tag">
+            <Check size={12} /> IN · 09:02
+          </div>
+        </div>
+      );
+    case "chat":
+      return (
+        <div className="art art-chat">
+          <div className="bubble q">Mileage of the 2024 model?</div>
+          <div className="bubble a">
+            <Bot size={13} /> About 18.2 km/l on the petrol variant.
+          </div>
+        </div>
+      );
+    case "grid":
+      return (
+        <div className="art art-grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span key={i} style={{ animationDelay: `${i * 0.15}s` }} />
+          ))}
+          <Film size={28} className="art-icon" />
+        </div>
+      );
+    default:
+      return (
+        <div className="art art-shop">
+          <ShoppingCart size={46} strokeWidth={1.4} />
+          <span className="cart-badge">3</span>
+        </div>
+      );
+  }
+}
+
+function ProjectModal({ project, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    window.__lenis?.stop();
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.__lenis?.start();
+    };
+  }, [onClose]);
+
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <motion.div
+      className="modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
     >
-      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-      <path d="M9 18c-4.51 2-5-2-7-2" />
-    </svg>
+      <motion.div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        layoutId={`card-${project.id}`}
+        onClick={(e) => e.stopPropagation()}
+        data-lenis-prevent
+        transition={{ duration: 0.5, ease }}
+      >
+        <button className="modal-close icon-btn" onClick={onClose} aria-label="Close">
+          <X size={18} />
+        </button>
+        <div className="modal-art">
+          <ProjectArt kind={project.visual} />
+        </div>
+        <motion.div
+          className="modal-body"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5, ease }}
+        >
+          <span className="project-cat">{project.category}</span>
+          <h3 id="modal-title">{project.title}</h3>
+          <p className="modal-desc">{project.description}</p>
+          <h4>What I built</h4>
+          <ul className="modal-points">
+            {project.points.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+          <h4>Stack</h4>
+          <div className="chips">
+            {project.tech.map((t) => (
+              <span className="chip chip-accent" key={t}>
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className="modal-actions">
+            <a className="btn btn-primary" href={personalInfo.github} target="_blank" rel="noreferrer">
+              <span>More on GitHub</span>
+              <GithubIcon size={16} />
+            </a>
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 function Projects() {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [filter, setFilter] = useState("All");
+  const [selected, setSelected] = useState(null);
+  const visible = projects.filter((p) => filter === "All" || p.category === filter);
 
   return (
-    <section className="section projects-section" id="projects">
-      <div className="section-container">
-        <div className="section-heading project-heading">
-          <div>
-            <span className="badge-tag">04 — SELECTED WORK</span>
-            <h2>
-              Things I've
-              <br />
-              <em>built.</em>
-            </h2>
-          </div>
-          <p>
-            A curated portfolio of software engineering projects, web platforms, and AI applications.
-          </p>
-        </div>
+    <section className="section" id="projects">
+      <div className="container">
+        <SectionHeading index="04" kicker="Selected work" title="Things I've" accent="built.">
+          AI systems and full-stack products. Click any card for the details.
+        </SectionHeading>
 
-        <div className="projects-grid">
-          {projects.map((project, index) => (
-            <motion.article
-              className={`project-card ${index === 0 ? "featured" : ""}`}
-              key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-            >
-              <div className="project-top">
-                <span className="project-num">{project.number}</span>
-                <span className="project-cat">{project.category}</span>
-              </div>
-
-              <div className="project-body">
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <div className="tag-pills">
-                  {project.technologies.map((tech) => (
-                    <span key={tech} className="tag-pill">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="project-footer">
-                <button
-                  className="btn-details"
-                  onClick={() => setSelectedProject(project)}
-                >
-                  <span>Project Overview</span>
-                  <Sparkles size={14} />
-                </button>
-
-                <div className="project-actions">
-                  <a
-                    className="btn-icon"
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`${project.title} GitHub`}
-                    title="Source Code"
-                  >
-                    <GithubIcon size={18} />
-                  </a>
-
-                  <a
-                    className="btn-icon"
-                    href={project.demo}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`${project.title} Live Demo`}
-                    title="Live Preview"
-                  >
-                    <ArrowUpRight size={18} />
-                  </a>
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-
-      {/* Project Details Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            className="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div
-              className="modal-content"
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-            >
+        <LayoutGroup>
+          <div className="filters" role="tablist" aria-label="Filter projects">
+            {projectFilters.map((f) => (
               <button
-                className="modal-close"
-                onClick={() => setSelectedProject(null)}
-                aria-label="Close modal"
+                key={f}
+                role="tab"
+                aria-selected={filter === f}
+                className={filter === f ? "active" : ""}
+                onClick={() => setFilter(f)}
               >
-                <X size={20} />
+                {filter === f && (
+                  <motion.span
+                    layoutId="filter-pill"
+                    className="filter-pill"
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  />
+                )}
+                <span className="filter-label">{f}</span>
               </button>
+            ))}
+          </div>
 
-              <span className="modal-category">{selectedProject.category}</span>
-              <h2 className="modal-title">{selectedProject.title}</h2>
-              <p className="modal-desc">{selectedProject.description}</p>
-
-              <h4 style={{ marginBottom: 12, color: "#fff", fontSize: 14 }}>Technologies Used:</h4>
-              <div className="tag-pills" style={{ marginBottom: 30 }}>
-                {selectedProject.technologies.map((tech) => (
-                  <span key={tech} className="tag-pill" style={{ borderColor: "var(--accent)", color: "var(--accent)" }}>
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div style={{ display: "flex", gap: 16 }}>
-                <a
-                  className="primary-button"
-                  href={selectedProject.demo}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ textDecoration: "none", fontSize: 13, height: 44 }}
+          <motion.div className="projects-grid" layout>
+            <AnimatePresence mode="popLayout">
+              {visible.map((p, i) => (
+                <motion.div
+                  key={p.id}
+                  layout
+                  className={`project-wrap ${p.featured ? "featured" : ""}`}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.25 } }}
+                  transition={{ duration: 0.7, delay: (i % 3) * 0.08, ease }}
                 >
-                  <span>Launch Live Demo</span>
-                  <ExternalLink size={16} />
-                </a>
-
-                <a
-                  className="secondary-button"
-                  href={selectedProject.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ textDecoration: "none", fontSize: 13, height: 44 }}
-                >
-                  <span>GitHub Repository</span>
-                  <GithubIcon size={16} />
-                </a>
-              </div>
-            </motion.div>
+                  <motion.div layoutId={`card-${p.id}`} className="project-layout">
+                    <TiltCard
+                      className="project-card"
+                      max={6}
+                      onClick={() => setSelected(p)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelected(p)}
+                      aria-label={`Open ${p.title} details`}
+                      data-cursor
+                    >
+                      <div className="project-art">
+                        <ProjectArt kind={p.visual} />
+                      </div>
+                      <div className="project-info">
+                        <div className="project-top">
+                          <span className="project-cat">{p.category}</span>
+                          <span className="project-open">
+                            <ArrowUpRight size={18} />
+                          </span>
+                        </div>
+                        <h3>{p.title}</h3>
+                        <p>{p.tagline}</p>
+                        <div className="chips">
+                          {p.tech.slice(0, 4).map((t) => (
+                            <span className="chip" key={t}>
+                              {t}
+                            </span>
+                          ))}
+                          {p.tech.length > 4 && <span className="chip chip-more">+{p.tech.length - 4}</span>}
+                        </div>
+                      </div>
+                    </TiltCard>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </motion.div>
-        )}
-      </AnimatePresence>
+
+          <AnimatePresence>
+            {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
+          </AnimatePresence>
+        </LayoutGroup>
+      </div>
     </section>
   );
 }

@@ -1,78 +1,139 @@
-import { motion } from "framer-motion";
-import { Code2, BrainCircuit, Database, Cpu } from "lucide-react";
-import { personalInfo } from "../data/portfolio";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { BrainCircuit, ScanEye, Server, Users, MapPin, Sparkles } from "lucide-react";
+import profile from "../assets/profile.jpg";
+import { personalInfo, stats } from "../data/portfolio";
+import { CountUp, Reveal, SectionHeading, TiltCard } from "./ui";
+import { ease } from "../lib/motion";
 
-function About() {
-  const cards = [
-    {
-      icon: <Code2 size={24} />,
-      title: "Full-Stack Development",
-      text: "Building robust, production-ready web applications using Laravel, React, REST APIs, and MySQL.",
-    },
-    {
-      icon: <BrainCircuit size={24} />,
-      title: "AI & Machine Learning",
-      text: "Integrating intelligent solutions using Python, Computer Vision, YOLOv8, and LLM technologies.",
-    },
-    {
-      icon: <Database size={24} />,
-      title: "Backend Engineering",
-      text: "Architecting high-performance APIs, relational database schemas, authentication systems, and business workflows.",
-    },
-    {
-      icon: <Cpu size={24} />,
-      title: "System Optimization",
-      text: "Improving DB queries, caching strategies, and application performance for scale.",
-    },
-  ];
+const pillars = [
+  {
+    icon: BrainCircuit,
+    title: "Generative AI",
+    text: "LLM apps with RAG, vector search and local models through Ollama.",
+  },
+  {
+    icon: ScanEye,
+    title: "Computer Vision",
+    text: "Real-time detection, OCR and face recognition with YOLO and OpenCV.",
+  },
+  {
+    icon: Server,
+    title: "Backend Engineering",
+    text: "Secure, fast REST APIs in Laravel and FastAPI with tuned SQL.",
+  },
+  {
+    icon: Users,
+    title: "Team Leadership",
+    text: "Leading developers, reviewing code and working directly with clients.",
+  },
+];
+
+function Portrait() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
 
   return (
-    <section className="section about-section" id="about">
-      <div className="section-container">
-        <div className="section-heading">
-          <span className="badge-tag">01 — ABOUT ME</span>
-          <h2>
-            Code with purpose.
-            <br />
-            <em>Build with curiosity.</em>
-          </h2>
+    <motion.div
+      ref={ref}
+      className="portrait-wrap"
+      initial={{ opacity: 0, y: 60, rotate: -3 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 1.1, ease }}
+    >
+      <TiltCard className="portrait" max={7}>
+        <span className="portrait-border" aria-hidden="true" />
+        <div className="portrait-frame">
+          <motion.img
+            src={profile}
+            alt={`Portrait of ${personalInfo.fullName}`}
+            style={{ y: imgY }}
+            width="720"
+            height="864"
+            loading="lazy"
+          />
+          <div className="portrait-shade" aria-hidden="true" />
+          <div className="portrait-caption">
+            <strong>{personalInfo.fullName}</strong>
+            <span>{personalInfo.role}</span>
+          </div>
+        </div>
+      </TiltCard>
+
+      <motion.div
+        className="portrait-badge pb-1"
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className="pulse-dot" /> Open to work
+      </motion.div>
+      <motion.div
+        className="portrait-badge pb-2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+      >
+        <MapPin size={14} /> {personalInfo.location}
+      </motion.div>
+      <motion.div
+        className="portrait-badge pb-3"
+        animate={{ rotate: [0, 8, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Sparkles size={14} /> AI · Full Stack
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function About() {
+  return (
+    <section className="section" id="about">
+      <div className="container">
+        <SectionHeading index="01" kicker="About me" title="Where backend" accent="meets AI." />
+
+        <div className="about-grid">
+          <Portrait />
+
+          <div className="about-copy">
+            {personalInfo.bio.map((p, i) => (
+              <Reveal as="p" key={i} delay={i * 0.12} className={i === 0 ? "lead" : ""}>
+                {p}
+              </Reveal>
+            ))}
+
+            <div className="stats-grid">
+              {stats.map((s, i) => (
+                <Reveal className="stat" key={s.label} delay={0.1 * i}>
+                  <span className="stat-value gradient-text">
+                    <CountUp to={s.value} suffix={s.suffix} />
+                  </span>
+                  <span className="stat-label">{s.label}</span>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="about-layout">
-          <motion.div
-            className="about-text"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="lead">{personalInfo.shortBio}</p>
-
-            <p>
-              My core engineering background revolves around <strong>PHP and Laravel development</strong>, complemented by modern frontend crafting in <strong>React</strong> and intelligent backend AI modeling with <strong>Python</strong>.
-            </p>
-
-            <p>
-              I take pride in translating complex client requirements into scalable backend architectures, clean RESTful endpoints, and responsive, interactive frontend experiences.
-            </p>
-          </motion.div>
-
-          <div className="about-cards-grid">
-            {cards.map((card, index) => (
+        <div className="pillars">
+            {pillars.map(({ icon: Icon, title, text }, i) => (
               <motion.div
-                className="about-card"
-                key={card.title}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
+                key={title}
+                initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease }}
               >
-                <div className="about-card-icon">{card.icon}</div>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
+                <TiltCard className="pillar">
+                  <span className="pillar-icon">
+                    <Icon size={22} />
+                  </span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </TiltCard>
               </motion.div>
             ))}
-          </div>
         </div>
       </div>
     </section>
