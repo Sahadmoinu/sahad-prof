@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import About from "./components/About";
+import Process from "./components/Process";
 import Experience from "./components/Experience";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
@@ -16,7 +17,7 @@ import Cursor from "./components/Cursor";
 
 function readTheme() {
   try {
-    return localStorage.getItem("theme") || "dark";
+    return localStorage.getItem("theme-v3") || "dark";
   } catch {
     return "dark";
   }
@@ -31,7 +32,7 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     try {
-      localStorage.setItem("theme", theme);
+      localStorage.setItem("theme-v3", theme);
     } catch {
       /* storage unavailable */
     }
@@ -86,6 +87,7 @@ function App() {
           <Hero ready={!loading} />
           <Marquee />
           <About />
+          <Process />
           <Experience />
           <Skills />
           <Projects />

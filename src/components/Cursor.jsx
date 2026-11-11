@@ -15,6 +15,8 @@ function Cursor() {
   const y = useMotionValue(-100);
   const rx = useSpring(x, { stiffness: 350, damping: 30, mass: 0.5 });
   const ry = useSpring(y, { stiffness: 350, damping: 30, mass: 0.5 });
+  const gx = useSpring(x, { stiffness: 60, damping: 20, mass: 1 });
+  const gy = useSpring(y, { stiffness: 60, damping: 20, mass: 1 });
 
   useEffect(() => {
     if (!enabled) return;
@@ -43,6 +45,7 @@ function Cursor() {
 
   return (
     <>
+      <motion.div className="cursor-glow" style={{ x: gx, y: gy }} aria-hidden="true" />
       <motion.div className="cursor-dot" style={{ x, y }} />
       <motion.div
         className={`cursor-ring ${hover ? "is-hover" : ""}`}

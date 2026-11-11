@@ -6,11 +6,11 @@ function Education() {
   return (
     <section className="section section-tight" id="education">
       <div className="container">
-        <SectionHeading index="05" kicker="Learning" title="Education &" accent="training." />
+        <SectionHeading index="06" kicker="Learning" title="Education &" accent="training." />
 
         <div className="edu-grid">
           <Reveal>
-            <TiltCard className="edu-card" max={4}>
+            <TiltCard className="edu-card glow-card" max={4}>
               <span className="edu-icon">
                 <GraduationCap size={24} />
               </span>
@@ -24,7 +24,7 @@ function Education() {
 
           {certifications.map((c, i) => (
             <Reveal key={c.title} delay={0.12 * (i + 1)}>
-              <TiltCard className="edu-card cert" max={4}>
+              <TiltCard className="edu-card cert glow-card" max={4}>
                 <span className="edu-icon">
                   <Award size={24} />
                 </span>

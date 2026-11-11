@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useScroll,
   animate,
 } from "framer-motion";
 import { ease } from "../lib/motion";
@@ -59,8 +60,14 @@ export function SplitText({ text, className, delay = 0, stagger = 0.06 }) {
 }
 
 export function SectionHeading({ index, kicker, title, accent, children }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const ghostY = useTransform(scrollYProgress, [0, 1], [60, -60]);
   return (
-    <div className="section-heading">
+    <div className="section-heading" ref={ref}>
+      <motion.span className="heading-ghost" style={{ y: ghostY }} aria-hidden="true">
+        {index}
+      </motion.span>
       <Reveal className="section-kicker" y={20}>
         <span className="kicker-index">{index}</span>
         <span className="kicker-line" />

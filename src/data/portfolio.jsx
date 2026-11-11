@@ -91,7 +91,7 @@ export const skillGroups = [
   {
     title: "Generative AI",
     icon: "sparkles",
-    accent: "violet",
+    accent: "brand",
     blurb: "LLM apps grounded in your own data.",
     items: [
       "LLMs",
@@ -107,7 +107,7 @@ export const skillGroups = [
   {
     title: "ML & Deep Learning",
     icon: "brain",
-    accent: "cyan",
+    accent: "lime",
     blurb: "From EDA to trained, validated models.",
     items: [
       "Scikit-learn",
@@ -123,7 +123,7 @@ export const skillGroups = [
   {
     title: "Computer Vision",
     icon: "eye",
-    accent: "pink",
+    accent: "hot",
     blurb: "Real-time detection and recognition.",
     items: ["OpenCV", "YOLOv8", "EasyOCR", "face_recognition", "PDFPlumber"],
   },
@@ -147,14 +147,14 @@ export const skillGroups = [
   {
     title: "Frontend",
     icon: "layout",
-    accent: "emerald",
+    accent: "sky",
     blurb: "Clean, responsive interfaces.",
     items: ["React.js", "JavaScript", "HTML", "CSS", "Bootstrap"],
   },
   {
     title: "Data & Tools",
     icon: "database",
-    accent: "sky",
+    accent: "teal",
     blurb: "Storage, analysis and delivery.",
     items: [
       "Python",
@@ -301,5 +301,36 @@ export const certifications = [
     org: "Luminar Technolab, Ernakulam",
     period: "Jul 2025 — Mar 2026",
     text: "Hands-on training in Python, Machine Learning, Deep Learning, EDA and Power BI with real-world project implementation.",
+  },
+];
+
+export const process = [
+  {
+    step: "01",
+    title: "Data",
+    text: "Collect, clean and explore. Parse PDFs, run EDA, build the dataset the model needs.",
+    tools: ["PDFPlumber", "Pandas", "NumPy"],
+    icon: "database",
+  },
+  {
+    step: "02",
+    title: "Model",
+    text: "Embed, train or prompt: vector search with RAG, YOLO for vision, Scikit-learn for prediction.",
+    tools: ["Llama 3", "ChromaDB", "YOLOv8"],
+    icon: "brain",
+  },
+  {
+    step: "03",
+    title: "API",
+    text: "Wrap it in a fast, secure service with auth, validation and tuned SQL.",
+    tools: ["FastAPI", "Laravel", "MySQL"],
+    icon: "server",
+  },
+  {
+    step: "04",
+    title: "Product",
+    text: "Put it in front of users: dashboards, chat UIs and real-time results in React.",
+    tools: ["React", "REST", "Live UI"],
+    icon: "rocket",
   },
 ];

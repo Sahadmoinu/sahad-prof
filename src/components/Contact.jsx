@@ -44,7 +44,7 @@ function Contact() {
 
           <div className="contact-left">
             <Reveal className="section-kicker" y={20}>
-              <span className="kicker-index">06</span>
+              <span className="kicker-index">07</span>
               <span className="kicker-line" />
               <span>Contact</span>
             </Reveal>

@@ -17,7 +17,7 @@ function Skills() {
   return (
     <section className="section" id="skills">
       <div className="container">
-        <SectionHeading index="03" kicker="Toolkit" title="What I" accent="work with.">
+        <SectionHeading index="04" kicker="Toolkit" title="What I" accent="work with.">
           The stack behind everything from a vector search to a payment checkout.
         </SectionHeading>
 
@@ -33,7 +33,7 @@ function Skills() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.8, delay: (i % 3) * 0.1, ease }}
               >
-                <TiltCard className={`skill-card accent-${g.accent}`} max={5}>
+                <TiltCard className={`skill-card glow-card accent-${g.accent}`} max={5}>
                   <div className="skill-head">
                     <span className="skill-icon">
                       <Icon size={22} />

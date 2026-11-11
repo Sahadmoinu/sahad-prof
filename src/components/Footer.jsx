@@ -7,7 +7,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-giant" aria-hidden="true">
-        SAHAD
+        Sahad.
       </div>
       <div className="container footer-inner">
         <p>

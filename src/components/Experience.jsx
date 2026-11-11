@@ -13,7 +13,7 @@ function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <SectionHeading index="02" kicker="Experience" title="The path" accent="so far.">
+        <SectionHeading index="03" kicker="Experience" title="The path" accent="so far.">
           From intern to team lead, with a data science detour that turned into my focus.
         </SectionHeading>
 
@@ -43,7 +43,7 @@ function Experience() {
                   <Icon size={15} />
                 </motion.span>
 
-                <div className="job-card">
+                <div className="job-card glow-card">
                   <div className="job-top">
                     <span className="job-period">{job.period}</span>
                     <span className={`job-type ${job.current ? "now" : ""}`}>

@@ -6,6 +6,7 @@ import { ease, scrollToId } from "../lib/motion";
 
 const links = [
   ["About", "about"],
+  ["Process", "process"],
   ["Experience", "experience"],
   ["Skills", "skills"],
   ["Projects", "projects"],

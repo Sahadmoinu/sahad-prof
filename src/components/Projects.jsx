@@ -149,15 +149,31 @@ function ProjectModal({ project, onClose }) {
   );
 }
 
+/* Grid placement on a 6-column grid so every row is filled:
+   featured = full width; the rest go 3 per row, and a short last
+   row stretches (2 items -> half width each, 1 item -> full width). */
+function layoutFor(i, count, hasFeatured) {
+  if (hasFeatured && i === 0) return "big";
+  const idx = hasFeatured ? i - 1 : i;
+  const m = hasFeatured ? count - 1 : count;
+  const rem = m % 3;
+  let span = "span-2";
+  if (rem && idx >= m - rem) span = rem === 2 ? "span-3" : "span-6";
+  // tablet (2 per row): the odd one out goes full width
+  const lastOdd = m % 2 === 1 && idx === m - 1 ? " last-odd" : "";
+  return span + lastOdd;
+}
+
 function Projects() {
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState(null);
   const visible = projects.filter((p) => filter === "All" || p.category === filter);
+  const hasFeatured = filter === "All";
 
   return (
     <section className="section" id="projects">
       <div className="container">
-        <SectionHeading index="04" kicker="Selected work" title="Things I've" accent="built.">
+        <SectionHeading index="05" kicker="Selected work" title="Things I've" accent="built.">
           AI systems and full-stack products. Click any card for the details.
         </SectionHeading>
 
@@ -185,11 +201,13 @@ function Projects() {
 
           <motion.div className="projects-grid" layout>
             <AnimatePresence mode="popLayout">
-              {visible.map((p, i) => (
+              {visible.map((p, i) => {
+                const big = hasFeatured && i === 0;
+                return (
                 <motion.div
                   key={p.id}
                   layout
-                  className={`project-wrap ${p.featured ? "featured" : ""}`}
+                  className={`project-wrap ${layoutFor(i, visible.length, hasFeatured)}`}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, margin: "-40px" }}
@@ -198,8 +216,8 @@ function Projects() {
                 >
                   <motion.div layoutId={`card-${p.id}`} className="project-layout">
                     <TiltCard
-                      className="project-card"
-                      max={6}
+                      className="project-card glow-card"
+                      max={big ? 0 : 5}
                       onClick={() => setSelected(p)}
                       role="button"
                       tabIndex={0}
@@ -212,26 +230,39 @@ function Projects() {
                       </div>
                       <div className="project-info">
                         <div className="project-top">
-                          <span className="project-cat">{p.category}</span>
+                          <span className="project-cat">
+                            {big && <span className="featured-tag">Featured</span>}
+                            {p.category}
+                          </span>
                           <span className="project-open">
                             <ArrowUpRight size={18} />
                           </span>
                         </div>
                         <h3>{p.title}</h3>
-                        <p>{p.tagline}</p>
+                        <p>{big ? p.description : p.tagline}</p>
+                        {big && (
+                          <ul className="project-points">
+                            {p.points.slice(0, 3).map((pt) => (
+                              <li key={pt}>{pt}</li>
+                            ))}
+                          </ul>
+                        )}
                         <div className="chips">
-                          {p.tech.slice(0, 4).map((t) => (
+                          {p.tech.slice(0, big ? 6 : 4).map((t) => (
                             <span className="chip" key={t}>
                               {t}
                             </span>
                           ))}
-                          {p.tech.length > 4 && <span className="chip chip-more">+{p.tech.length - 4}</span>}
+                          {!big && p.tech.length > 4 && (
+                            <span className="chip chip-more">+{p.tech.length - 4}</span>
+                          )}
                         </div>
                       </div>
                     </TiltCard>
                   </motion.div>
                 </motion.div>
-              ))}
+                );
+              })}
             </AnimatePresence>
           </motion.div>
 
