@@ -6,7 +6,7 @@ function Education() {
   return (
     <section className="section section-tight" id="education">
       <div className="container">
-        <SectionHeading index="06" kicker="Learning" title="Education &" accent="training." />
+        <SectionHeading index="05" kicker="Learning" title="Education &" accent="training." />
 
         <div className="edu-grid">
           <Reveal>

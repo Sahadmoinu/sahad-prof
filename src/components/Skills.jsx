@@ -17,7 +17,7 @@ function Skills() {
   return (
     <section className="section" id="skills">
       <div className="container">
-        <SectionHeading index="04" kicker="Toolkit" title="What I" accent="work with.">
+        <SectionHeading index="03" kicker="Toolkit" title="What I" accent="work with.">
           The stack behind everything from a vector search to a payment checkout.
         </SectionHeading>
 

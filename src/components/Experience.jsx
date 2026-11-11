@@ -13,7 +13,7 @@ function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <SectionHeading index="03" kicker="Experience" title="The path" accent="so far.">
+        <SectionHeading index="02" kicker="Experience" title="The path" accent="so far.">
           From intern to team lead, with a data science detour that turned into my focus.
         </SectionHeading>
 

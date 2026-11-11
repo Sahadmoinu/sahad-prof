@@ -1135,7 +1135,6 @@ main,
 .skill-card,
 .project-card,
 .edu-card,
-.process-card,
 .modal {
   background: var(--paper);
   border: 1px solid var(--border);
@@ -1146,8 +1145,7 @@ main,
 .job-card:hover,
 .skill-card:hover,
 .project-card:hover,
-.edu-card:hover,
-.process-card:hover {
+.edu-card:hover {
   box-shadow: var(--shadow);
   border-color: var(--border-2);
 }
@@ -1277,105 +1275,6 @@ main,
 .pillar p {
   font-size: 14.5px;
   color: var(--muted);
-}
-
-/* =========================================================
-   PROCESS
-========================================================= */
-.process {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-.process-line {
-  position: absolute;
-  top: 29px;
-  left: 12.5%;
-  right: 12.5%;
-  height: 1.5px;
-  background: var(--border-2);
-}
-.process-line-fill {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, var(--ink), var(--accent));
-  transform-origin: left center;
-  transform: scaleX(var(--p, 0));
-}
-.process-pulse {
-  position: absolute;
-  top: -4px;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 6px var(--accent-soft);
-  animation: pulseMove 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-@keyframes pulseMove {
-  from {
-    left: 0;
-    opacity: 0;
-  }
-  10%,
-  90% {
-    opacity: 1;
-  }
-  to {
-    left: 100%;
-    opacity: 0;
-  }
-}
-.process-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.process-node {
-  position: relative;
-  z-index: 2;
-  width: 60px;
-  height: 60px;
-  margin-bottom: 26px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--on-ink);
-  background: var(--ink);
-  box-shadow: 0 0 0 8px var(--bg);
-}
-.process-card {
-  width: 100%;
-  height: 100%;
-  padding: 28px 24px;
-  border-radius: var(--radius);
-}
-.tilt-card > .process-num {
-  position: absolute;
-  top: 8px;
-  right: 18px;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 58px;
-  line-height: 1;
-  color: var(--bg-2);
-  transition: color 0.4s;
-}
-.process-card:hover .process-num {
-  color: var(--accent);
-}
-.process-card h3 {
-  font-family: var(--font-display);
-  font-size: 24px;
-  letter-spacing: -0.03em;
-  margin-bottom: 10px;
-}
-.process-card p {
-  color: var(--muted);
-  font-size: 14.5px;
-  margin-bottom: 18px;
 }
 
 /* =========================================================
@@ -2558,13 +2457,6 @@ main,
   .pillars {
     grid-template-columns: repeat(2, 1fr);
   }
-  .process {
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 40px;
-  }
-  .process-line {
-    display: none;
-  }
   .project-wrap.span-2,
   .project-wrap.span-3 {
     grid-column: span 3;
@@ -2671,35 +2563,6 @@ main,
   .pillars {
     grid-template-columns: 1fr;
     margin-top: 48px;
-  }
-  .process {
-    grid-template-columns: 1fr;
-    row-gap: 22px;
-  }
-  .process-line {
-    display: block;
-    top: 30px;
-    bottom: 30px;
-    left: 29px;
-    right: auto;
-    width: 1.5px;
-    height: auto;
-  }
-  .process-line-fill {
-    transform-origin: center top;
-    transform: scaleY(var(--p, 0));
-  }
-  .process-pulse {
-    display: none;
-  }
-  .process-step {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  .process-node {
-    flex-shrink: 0;
-    margin: 0;
   }
   .timeline {
     padding-left: 46px;

@@ -173,7 +173,7 @@ function Projects() {
   return (
     <section className="section" id="projects">
       <div className="container">
-        <SectionHeading index="05" kicker="Selected work" title="Things I've" accent="built.">
+        <SectionHeading index="04" kicker="Selected work" title="Things I've" accent="built.">
           AI systems and full-stack products. Click any card for the details.
         </SectionHeading>
 

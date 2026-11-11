@@ -303,34 +303,3 @@ export const certifications = [
     text: "Hands-on training in Python, Machine Learning, Deep Learning, EDA and Power BI with real-world project implementation.",
   },
 ];
-
-export const process = [
-  {
-    step: "01",
-    title: "Data",
-    text: "Collect, clean and explore. Parse PDFs, run EDA, build the dataset the model needs.",
-    tools: ["PDFPlumber", "Pandas", "NumPy"],
-    icon: "database",
-  },
-  {
-    step: "02",
-    title: "Model",
-    text: "Embed, train or prompt: vector search with RAG, YOLO for vision, Scikit-learn for prediction.",
-    tools: ["Llama 3", "ChromaDB", "YOLOv8"],
-    icon: "brain",
-  },
-  {
-    step: "03",
-    title: "API",
-    text: "Wrap it in a fast, secure service with auth, validation and tuned SQL.",
-    tools: ["FastAPI", "Laravel", "MySQL"],
-    icon: "server",
-  },
-  {
-    step: "04",
-    title: "Product",
-    text: "Put it in front of users: dashboards, chat UIs and real-time results in React.",
-    tools: ["React", "REST", "Live UI"],
-    icon: "rocket",
-  },
-];
