@@ -37,7 +37,7 @@ export const stats = [
 export const experience = [
   {
     period: "Aug 2025 — Present",
-    role: "Software Developer & Team Lead",
+    role: "Full Stack Developer & Team Lead",
     company: "Bpract Software Solutions LLP",
     type: "Full-time",
     current: true,
