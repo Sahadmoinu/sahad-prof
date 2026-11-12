@@ -29,7 +29,7 @@ export const personalInfo = {
 
 export const stats = [
   { value: 3, suffix: "+", label: "Years building software" },
-  { value: 6, suffix: "+", label: "AI & full-stack projects" },
+  { value: 7, suffix: "+", label: "AI & full-stack projects" },
   { value: 9, suffix: "", label: "Months of Data Science training" },
   { value: 30, suffix: "+", label: "Tools & technologies" },
 ];
@@ -270,6 +270,21 @@ export const projects = [
     ],
     tech: ["React", "Node.js", "FastAPI", "TF-IDF", "Cosine Similarity"],
     visual: "grid",
+  },
+  {
+    id: "erp-hrm-crm",
+    title: "ERP / HRM / CRM System",
+    category: "Full Stack",
+    tagline: "Inventory, HR, CRM, billing and reporting in one platform.",
+    description:
+      "A comprehensive ERP application that runs business operations across multiple departments, with HRM and CRM modules alongside inventory, billing and reporting.",
+    points: [
+      "Built Inventory, HRM, CRM, Billing and Reporting modules.",
+      "Designed REST APIs, role-based access control and automated workflows.",
+      "Improved database performance with optimised queries and indexing.",
+    ],
+    tech: ["Laravel", "Livewire", "MySQL", "REST API", "RBAC", "Queues"],
+    visual: "erp",
   },
   {
     id: "ecommerce",

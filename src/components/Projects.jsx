@@ -60,6 +60,24 @@ function ProjectArt({ kind }) {
           </div>
         </div>
       );
+    case "erp":
+      return (
+        <div className="art art-erp">
+          <div className="erp-panel">
+            <div className="erp-bars">
+              {[48, 72, 56, 88, 64, 96].map((h, i) => (
+                <span key={i} style={{ height: `${h}%`, animationDelay: `${i * 0.12}s` }} />
+              ))}
+            </div>
+            <div className="erp-mods">
+              <span>HRM</span>
+              <span>CRM</span>
+              <span>Inventory</span>
+              <span>Billing</span>
+            </div>
+          </div>
+        </div>
+      );
     case "grid":
       return (
         <div className="art art-grid">

@@ -2005,6 +2005,60 @@ main,
   }
 }
 
+.erp-panel {
+  width: 200px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--paper);
+  border: 1px solid var(--border-2);
+  box-shadow: var(--shadow-sm);
+}
+.erp-bars {
+  height: 70px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.erp-bars span {
+  flex: 1;
+  border-radius: 4px 4px 2px 2px;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  transform-origin: bottom;
+  animation: barGrow 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite alternate;
+}
+.erp-bars span:nth-child(4),
+.erp-bars span:nth-child(6) {
+  background: var(--accent);
+}
+@keyframes barGrow {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.erp-mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.erp-mods span {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--border-2);
+  color: var(--muted);
+}
+.erp-mods span:nth-child(-n + 2) {
+  color: var(--on-ink);
+  background: var(--ink);
+  border-color: var(--ink);
+}
 .art-shop {
   color: var(--ink);
 }
